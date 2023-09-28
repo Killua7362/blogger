@@ -3,11 +3,10 @@ const db =new PrismaClient();
 
 async function main() {
     try{
-       await db.posts.create({
+       await db.user.create({
             data:{
-                title:'second',
-                description:'description',
-                article:'article'
+                name:'second',
+                email:'description',
             }        
         })
     }catch(error){

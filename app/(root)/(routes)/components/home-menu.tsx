@@ -1,4 +1,3 @@
-'use client'
 import { useSession, signIn, signOut} from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -10,20 +9,28 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { MoreVerticalIcon } from "lucide-react";
 import AdminHomeMenu from "./admin-home-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import axios from "axios";
+import { Role } from "@prisma/client";
 
 const HomeMenu = ({extraComponents}:{extraComponents:[]}) => {
     const {data:session} = useSession()
     const [adminState,setAdminState] =useRecoilState(admin)
     useEffect(()=>{
         if(session){
-            if (session.user.email === process.env.NEXT_PUBLIC_ADMIN_MAIL){
-                setAdminState(true)
+            const adminStateHandler =async ()=>{
+                const role = await axios.patch(`/api/users/${session.user?.email}`)
+                if(role.data.role === Role.ADMIN){
+                    setAdminState(true)
+                }else{
+                    setAdminState(false)
+                }
             }
-            else{
-                setAdminState(false)
-            }
+        adminStateHandler()
         }
     },[session])
+    const signInHandler = async () =>{
+        await signIn()
+    }
 
     return (
         <div>
@@ -37,7 +44,7 @@ const HomeMenu = ({extraComponents}:{extraComponents:[]}) => {
                         {session === undefined || session === null ? 
                             <div>
                                 <DropdownMenuItem>
-                                    <Button variant='ghost' size='base' onClick={signIn}>Sign In</Button>
+                                    <Button variant='ghost' size='base' onClick={signInHandler}>Sign In</Button>
                                 </DropdownMenuItem>
                             </div>:
                             <div>

@@ -23,7 +23,7 @@ try {
         return new NextResponse('id is required',{status:400})
     }
 
-    const companion =await prismadb.posts.update({
+    const posts=await prismadb.posts.update({
         where:{
             id:params.postId,
         },
@@ -31,7 +31,7 @@ try {
             id,title,description,article,comments,createdAt,updatedAt
         }
     })
-        return NextResponse.json(companion);
+        return NextResponse.json(posts);
 } catch (error) {
     console.log('[COMPANION_PATCH]',error)
     return new NextResponse("Internal Error",{status:500})
@@ -52,8 +52,6 @@ export async function DELETE(
         if(!admin){
             return new NextResponse('UnAuthorized',{status:401})
         }
-    
-    
         const posts = await prismadb.posts.delete({
             where:{
                 id:params.postId

@@ -3,7 +3,6 @@ import { useRecoilState } from "recoil";
 import { ModeToggle } from "./mode-toggle";
 import { Button } from "./ui/button";
 import { SessionProvider } from "next-auth/react";
-import { admin } from "@/recoil/admin";
 import { useRouter } from "next/navigation";
 import HomeMenu from "@/app/(root)/(routes)/components/home-menu";
 import { useTheme } from "next-themes";

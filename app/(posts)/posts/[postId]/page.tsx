@@ -19,7 +19,11 @@ const EditorPage = async ({searchParams}:{searchParams:EditorPageProps}) => {
         notFound()
         new NextResponse('Post does not exist',{status:404})
     })
-    return <Editor initialEditing={post?.article === ""?true:false} initialData={post}/>
+    return(
+        <div>
+            <Editor initialEditing={post?.article === ""?true:false} initialData={post}/>
+        </div>
+    ) 
 }
  
 export default EditorPage;

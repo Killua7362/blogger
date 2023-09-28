@@ -4,7 +4,7 @@ import type { ContextStore } from '@uiw/react-md-editor';
 import { Button } from "@/components/ui/button";
 import { useCallback, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { edit } from '@/recoil/admin';
+import { admin, edit } from '@/recoil/admin';
 import axios from 'axios'
 import { useRouter } from 'next/navigation';
 import { Comment } from '.prisma/client';
@@ -28,11 +28,14 @@ export interface EditorProps{
 const Editor = ({initialEditing,initialData}:{initialEditing:boolean,initialData:EditorProps}) => {
     const { theme,setTheme } = useTheme()
     const [isEditing,setIsEditing] = useRecoilState(edit)
+    const [adminState,setAdminState] =useRecoilState(admin)
+
     const [value, setValue] = useState(initialData.article);
     useEffect(()=>{
         setIsEditing(initialEditing)
     },[])
     const onChange = useCallback<OnChange>((val) => {
+
         setValue(val || '');
       }, []);
       const router = useRouter()
@@ -57,6 +60,7 @@ const Editor = ({initialEditing,initialData}:{initialEditing:boolean,initialData
             <div className="fixed left-10 right-10" data-color-mode={theme}>
                 <div className='text-4xl'>
                     {initialData.title}
+                {adminState && <TitleEditForm initialData={initialData} />}
                 </div>
                 <Separator className='mb-4 mt-6'/>
 
@@ -88,7 +92,7 @@ const Editor = ({initialEditing,initialData}:{initialEditing:boolean,initialData
         <div>
             <div className='text-4xl flex'>
                 {initialData.title}
-                <TitleEditForm initialData={initialData} />
+                {adminState && <TitleEditForm initialData={initialData} />}
             </div>
             <Separator className='mb-4 mt-6'/>
             <div data-color-mode={theme}>

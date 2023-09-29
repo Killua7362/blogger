@@ -39,7 +39,7 @@ const CommentItem = ({postId,comment}:{postId:string,comment:CommentItemProps}) 
                                 {userData.name}
                             </div>
                             <div className="text-xs pb-2">
-                                {format(new Date( comment.createdAt ),'dd/MM/yyy' )}
+                                {format(new Date( comment.createdAt ),'mm:hh dd/MM/yyy ' )}
                             </div>
                             <div>
                                 {comment.comment}

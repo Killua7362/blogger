@@ -12,6 +12,7 @@ import { useTheme } from 'next-themes';
 import { Separator } from '@/components/ui/separator';
 import { Pencil } from 'lucide-react';
 import TitleEditForm from './title-edit-form';
+import CommentsPage from '../posts/[postId]/components/comments';
 
 type OnChange = (value?: string, event?: React.ChangeEvent<HTMLTextAreaElement>, state?: ContextStore) => void;
 
@@ -25,7 +26,12 @@ export interface EditorProps{
     updatedAt:string,
 }
 
-const Editor = ({initialEditing,initialData}:{initialEditing:boolean,initialData:EditorProps}) => {
+
+export interface CommentsPageProps{
+    searchParamsId:string
+}
+
+const Editor = ({initialEditing,initialData,searchParamsId}:{initialEditing:boolean,initialData:EditorProps,searchParamsId:CommentsPageProps}) => {
     const { theme,setTheme } = useTheme()
     const [isEditing,setIsEditing] = useRecoilState(edit)
     const [adminState,setAdminState] =useRecoilState(admin)
@@ -60,11 +66,17 @@ const Editor = ({initialEditing,initialData}:{initialEditing:boolean,initialData
             <div className="fixed left-10 right-10" data-color-mode={theme}>
                 <div className='text-4xl'>
                     {initialData.title}
-                {adminState && <TitleEditForm initialData={initialData} />}
+                {adminState && <TitleEditForm initialData={initialData} buttonType='icon' />}
                 </div>
                 <Separator className='mb-4 mt-6'/>
 
-                <div className="flex mb-3">
+                <MDEditor
+                    value={value}
+                    preview="live"
+                    height='73vh'
+                    onChange={onChange}
+                />
+                <div className="flex mt-3 w-full justify-end">
                         <Button variant='secondary' onClick={()=>{
                         setIsEditing(false)
                         onSubmit(value)
@@ -78,12 +90,7 @@ const Editor = ({initialEditing,initialData}:{initialEditing:boolean,initialData
                         Cancel
                         </Button>
                 </div>
-                <MDEditor
-                    value={value}
-                    preview="live"
-                    height='75vh'
-                    onChange={onChange}
-                />
+                <CommentsPage searchParamsId={searchParamsId}/>
             </div>
       );
     }
@@ -98,6 +105,7 @@ const Editor = ({initialEditing,initialData}:{initialEditing:boolean,initialData
             <div data-color-mode={theme}>
                 <MDEditor.Markdown source={value}/>
             </div> 
+            <CommentsPage searchParamsId={searchParamsId}/>
         </div> )
 
     }

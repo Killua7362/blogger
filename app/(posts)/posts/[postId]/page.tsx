@@ -23,8 +23,7 @@ const EditorPage = async ({searchParams}:{searchParams:EditorPageProps}) => {
     })
     return(
         <div>
-            <Editor initialEditing={post?.article === ""?true:false} initialData={post}/>
-            <CommentsPage searchParamsId={searchParams.id}/>
+            <Editor initialEditing={post?.article === ""?true:false} initialData={post} searchParamsId={searchParams.id}/>
         </div>
     ) 
 }

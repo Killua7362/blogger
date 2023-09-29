@@ -8,10 +8,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import CommentItem from "./comment-item";
 import { useRouter } from "next/navigation";
+import { CommentsPageProps } from "@/app/(posts)/components/markdown-editor";
 
-interface CommentsPageProps{
-    searchParamsId:string
-}
 
 const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
     const [session,setSession] = useState(null)
@@ -41,7 +39,11 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
                 setPost(postData.data)
             }
             if(postData.data.comments!==undefined){
-                setComments(postData.data.comments)
+                setComments(
+                    postData.data.comments.sort(function(a,b){
+                        return new Date(b.createdAt) - new Date(a.createdAt)
+                    })
+                )
             }
         }
 
@@ -53,7 +55,6 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
                 setSession(session.data)
             }
         }
-
         sessionHandler()
     },[comments,post])
 

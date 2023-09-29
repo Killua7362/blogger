@@ -24,10 +24,10 @@ const AdminPostMenu = () => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator/>
             <DropdownMenuItem>
-                <Button variant='ghost' onClick={()=>{setIsEditing(true)}}>Edit</Button>
+                <Button variant='ghost' size="sm" onClick={()=>{setIsEditing(true)}}>Edit</Button>
             </DropdownMenuItem>
             <DropdownMenuItem>
-                <Button variant='ghost'  onClick={()=>deleteHandler()}>Delete</Button>
+                <Button variant='ghost' size="sm" onClick={()=>deleteHandler()}>Delete</Button>
             </DropdownMenuItem>
         </>
      );

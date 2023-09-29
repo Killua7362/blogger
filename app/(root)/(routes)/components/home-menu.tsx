@@ -48,7 +48,7 @@ const HomeMenu = ({extraComponents}:{extraComponents:JSX.Element[]}) => {
                         {session === undefined || session === null ? 
                             <div>
                                 <DropdownMenuItem>
-                                    <Button variant='ghost' onClick={signInHandler}>Sign In</Button>
+                                    <Button variant='ghost' size="sm" onClick={signInHandler}>Sign In</Button>
                                 </DropdownMenuItem>
                             </div>:
                             <div>
@@ -64,7 +64,7 @@ const HomeMenu = ({extraComponents}:{extraComponents:JSX.Element[]}) => {
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator/>
                                 <DropdownMenuItem>
-                                    <Button variant='ghost'  onClick={signOutHandler}>Sign Out</Button>
+                                    <Button variant='ghost' size="sm" onClick={signOutHandler}>Sign Out</Button>
                                 </DropdownMenuItem>
                                 {adminState && <AdminHomeMenu/>}
                                 {adminState && extraComponents !== null && extraComponents!== undefined?extraComponents.map((component)=>(

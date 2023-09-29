@@ -75,7 +75,7 @@ const BlogItem = ({initialData}:{initialData:Posts}) => {
                     <ContextMenuContent>
                         <TitleEditForm initialData={initialData} buttonType={'text'}/>
                         <ContextMenuItem>
-                            <Button variant='ghost' onClick={contextDeleteHandler}>Delete</Button>
+                            <Button variant='ghost' size="sm" onClick={contextDeleteHandler}>Delete</Button>
                         </ContextMenuItem>
                     </ContextMenuContent>
                 </ContextMenu>

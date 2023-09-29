@@ -21,7 +21,7 @@ const CommentItem = ({postId,comment}:{postId:string,comment:CommentItemProps}) 
             setUserData(user.data)
         }
         getUserInfo()
-    },[])
+    })
     return (
          <div className="py-2 my-2 w-full ">
             {userData !== null && 

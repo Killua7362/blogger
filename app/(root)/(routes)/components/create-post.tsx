@@ -73,7 +73,7 @@ const CreatePost = () => {
                             Create a new post
                         </DialogTitle>
                         <DialogDescription>
-                            Type your new post's name and description and click on submit
+                            Type your new post&apos;os name and description and click on submit
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>

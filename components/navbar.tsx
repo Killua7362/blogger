@@ -17,7 +17,7 @@ const NavBar = ({ extraComponents }:{extraComponents:[]}) => {
                 router.push('/')
             }}>
                 <div>
-                    KILLUA'S
+                    KILLUA&apos;'S
                 </div>
                 <div className="pl-3">
                     BLOG

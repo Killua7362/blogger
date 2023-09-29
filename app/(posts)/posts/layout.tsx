@@ -9,7 +9,7 @@ const BaseLayout = (
             <NavBar extraComponents={[
                 <AdminPostMenu/>
             ]}/>
-            <div className="pt-20 h-full px-5 xl:px-96 ">
+            <div className="pt-20 h-full px-5 xl:px-96" key='1'>
                 {children}
             </div>
         </div>

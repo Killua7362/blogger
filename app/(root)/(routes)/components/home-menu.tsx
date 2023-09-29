@@ -27,7 +27,7 @@ const HomeMenu = ({extraComponents}:{extraComponents:[]}) => {
             }
         adminStateHandler()
         }
-    },[session])
+    },[session,setAdminState])
     const signInHandler = async () =>{
         await signIn()
     }

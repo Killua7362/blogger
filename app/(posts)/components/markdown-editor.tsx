@@ -39,7 +39,7 @@ const Editor = ({initialEditing,initialData,searchParamsId}:{initialEditing:bool
     const [value, setValue] = useState(initialData.article);
     useEffect(()=>{
         setIsEditing(initialEditing)
-    },[])
+    })
     const onChange = useCallback<OnChange>((val) => {
 
         setValue(val || '');

@@ -25,6 +25,7 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
                 postId:post.id
             }
             await axios.post(`/api/comment`,values)
+            setInputComment('')
             router.refresh()
         }
         // console.log(inputcomment)
@@ -56,7 +57,7 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
             }
         }
         sessionHandler()
-    },[comments,post])
+    },[comments,post,searchParamsId])
 
     return (
         <div className="pb-80 pt-7">
@@ -76,6 +77,7 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
                 <div className="flex w-full">
                     <Input className="w-full ml-4"
                     placeholder={session === null? 'Sign In to comment':'Type your comment'}
+                    value={inputcomment}
                     onChange={(event)=>{
                         setInputComment(event.target.value || '')
                     }}
@@ -88,7 +90,7 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
             </div>
             <div className="pt-4">
                 {comments.map((item)=>(
-                    <CommentItem postId={searchParamsId} comment={item}/>
+                    <CommentItem key={searchParamsId.searchParamsId} postId={searchParamsId} comment={item}/>
                 ))}
             </div>
         </div>

@@ -83,7 +83,7 @@ const TitleEditForm = ({initialData,buttonType}:{initialData:TitleEditFormProps,
                             Edit the Post
                         </DialogTitle>
                         <DialogDescription>
-                            Type your new post's name and description and click on submit.
+                            Type your new post&apos;s name and description and click on submit.
                             Click Escape if you want to cancel
                         </DialogDescription>
                     </DialogHeader>

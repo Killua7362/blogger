@@ -67,7 +67,7 @@ const BlogItem = ({initialData}:{initialData:BlogItemProps}) => {
             }
         adminStateHandler()
         }
-    },[session])
+    },[session,setAdminState])
     if(adminState){
         return (
             <div onContextMenu={(e)=>e.preventDefault()}>

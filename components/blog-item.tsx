@@ -1,10 +1,17 @@
-import { Posts } from "@prisma/client";
+import { Posts, Role } from "@prisma/client";
 import { format } from 'date-fns';
 import { useRouter } from "next/navigation";
 import qs from "query-string";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "./ui/context-menu";
 import { Button } from "./ui/button";
 import axios from "axios";
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import prismadb from "@/lib/prismadb";
+import { useRecoilState } from "recoil";
+import { admin } from "@/recoil/admin";
+import TitleEditForm from "@/app/(posts)/components/title-edit-form";
+import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 
 interface BlogItemProps{
     initialData:Posts
@@ -12,6 +19,7 @@ interface BlogItemProps{
 
 const Item = ({initialData}:{initialData:BlogItemProps})=>{
     const router = useRouter()
+    
     return(
             <div className="flex flex-col pt-8" onClick={()=>{
                 const url = qs.stringifyUrl({
@@ -35,26 +43,52 @@ const Item = ({initialData}:{initialData:BlogItemProps})=>{
 
 const BlogItem = ({initialData}:{initialData:BlogItemProps}) => {
     const router = useRouter()
+    const {data:session} = useSession()
+    const [adminState,setAdminState] =useRecoilState(admin)
+
     const contextDeleteHandler = async()=>{
         const id = initialData.id
         await axios.delete(`/api/posts/${id}`)
         router.refresh()
     }
-    return (
-        <ContextMenu>
-            <ContextMenuTrigger>
-                <Item initialData={initialData}/>
-            </ContextMenuTrigger>
-            <ContextMenuContent>
-                <ContextMenuItem>
-                    <Button variant='ghost' size='base'>Edit</Button>
-                </ContextMenuItem>
-                <ContextMenuItem>
-                    <Button variant='ghost' size='base' onClick={contextDeleteHandler}>Delete</Button>
-                </ContextMenuItem>
-            </ContextMenuContent>
-        </ContextMenu>
-      );
+    const contextEditHandler = async()=>{
+
+    }
+
+    useEffect(()=>{
+        if(session){
+            const adminStateHandler =async ()=>{
+                const role = await axios.get(`/api/users/${session.user?.email}`)
+                if(role.data.role === Role.ADMIN){
+                    setAdminState(true)
+                }else{
+                    setAdminState(false)
+                }
+            }
+        adminStateHandler()
+        }
+    },[session])
+    if(adminState){
+        return (
+            <div onContextMenu={(e)=>e.preventDefault()}>
+                <ContextMenu modal={false}>
+                    <ContextMenuTrigger>
+                        <Item initialData={initialData}/>
+                    </ContextMenuTrigger>
+                    <ContextMenuContent>
+                        <TitleEditForm initialData={initialData} buttonType={'text'}/>
+                        <ContextMenuItem>
+                            <Button variant='ghost' size='base' onClick={contextDeleteHandler}>Delete</Button>
+                        </ContextMenuItem>
+                    </ContextMenuContent>
+                </ContextMenu>
+            </div>
+          );
+    }else{
+        return(
+            <Item initialData={initialData}/>
+        )
+    }
 }
  
 export default BlogItem;

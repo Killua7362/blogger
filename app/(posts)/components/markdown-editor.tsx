@@ -92,7 +92,7 @@ const Editor = ({initialEditing,initialData}:{initialEditing:boolean,initialData
         <div>
             <div className='text-4xl flex'>
                 {initialData.title}
-                {adminState && <TitleEditForm initialData={initialData} />}
+                {adminState && <TitleEditForm initialData={initialData} buttonType={'icon'} />}
             </div>
             <Separator className='mb-4 mt-6'/>
             <div data-color-mode={theme}>

@@ -57,8 +57,27 @@ export async function DELETE(
                 id:params.postId
             }
         })
-        console.log(params.postId)
         return NextResponse.json(posts);
+    } catch (error) {
+        console.log("[Post_DELETE",error)
+        return new NextResponse('Internal Error',{status:500})
+    }
+}
+
+export async function GET(
+    req:NextRequest,
+    {params}:{params:{postId:string}}
+){
+    try{
+        const post = await prismadb.posts.findUnique({
+            where:{
+                id:params.postId
+            },
+            include:{
+                comments:true
+            }
+        })
+        return NextResponse.json(post);
     } catch (error) {
         console.log("[Post_DELETE",error)
         return new NextResponse('Internal Error',{status:500})

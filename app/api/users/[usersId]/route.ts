@@ -1,18 +1,24 @@
 import prismadb from "@/lib/prismadb";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH(req:NextRequest,
+export async function GET(req:NextRequest,
     {params}:{params:{usersId:string}}
     ){
 try {
-        const user = await prismadb.user.findUnique({
+        const UserByMail = await prismadb.user.findUnique({
             where:{
                 email:params.usersId
             }
         })
-        return NextResponse.json(user);
+        const UserByID = await prismadb.user.findUnique({
+            where:{
+                id:params.usersId
+            }
+        })
+        const User = UserByID === null? UserByMail:UserByID
+        return NextResponse.json(User);
 } catch (error) {
-    console.log('[COMPANION_PATCH]',error)
+    console.log('[USERS_GET]',error)
     return new NextResponse("Internal Error",{status:500})
 }
 }

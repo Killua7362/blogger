@@ -22,8 +22,6 @@ model User{
   email String @unique
   role Role @default(USER)
   comments Comment[]
-  createdAt  DateTime @default(now())
- 
 }
 
 model Posts{

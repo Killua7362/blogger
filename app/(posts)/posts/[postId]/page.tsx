@@ -3,6 +3,8 @@ import Editor from "../../components/markdown-editor";
 import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
 import { useRouter,notFound} from "next/navigation";
+import { Separator } from "@/components/ui/separator";
+import CommentsPage from "./components/comments";
 
 interface EditorPageProps{
     searchParams:{
@@ -22,6 +24,7 @@ const EditorPage = async ({searchParams}:{searchParams:EditorPageProps}) => {
     return(
         <div>
             <Editor initialEditing={post?.article === ""?true:false} initialData={post}/>
+            <CommentsPage searchParamsId={searchParams.id}/>
         </div>
     ) 
 }

@@ -18,7 +18,7 @@ const HomeMenu = ({extraComponents}:{extraComponents:[]}) => {
     useEffect(()=>{
         if(session){
             const adminStateHandler =async ()=>{
-                const role = await axios.patch(`/api/users/${session.user?.email}`)
+                const role = await axios.get(`/api/users/${session.user?.email}`)
                 if(role.data.role === Role.ADMIN){
                     setAdminState(true)
                 }else{
@@ -30,6 +30,10 @@ const HomeMenu = ({extraComponents}:{extraComponents:[]}) => {
     },[session])
     const signInHandler = async () =>{
         await signIn()
+    }
+    const signOutHandler = async()=>{
+        setAdminState(false)
+        await signOut()
     }
 
     return (
@@ -60,7 +64,7 @@ const HomeMenu = ({extraComponents}:{extraComponents:[]}) => {
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator/>
                                 <DropdownMenuItem>
-                                    <Button variant='ghost' size='base' onClick={signOut}>Sign Out</Button>
+                                    <Button variant='ghost' size='base' onClick={signOutHandler}>Sign Out</Button>
                                 </DropdownMenuItem>
                                 {adminState && <AdminHomeMenu/>}
                                 {adminState && extraComponents !== null && extraComponents!== undefined?extraComponents.map((component)=>(

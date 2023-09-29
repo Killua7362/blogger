@@ -21,9 +21,11 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { EditorProps } from "./markdown-editor";
+import { ContextMenu, ContextMenuItem } from "@radix-ui/react-context-menu";
 
 interface TitleEditFormProps{
-    initialData:EditorProps
+    initialData:EditorProps,
+    buttonType:string
 }
 
 let titleList = []
@@ -39,7 +41,20 @@ const formSchema = z.object({
     }).max(200),
   })
 
-const TitleEditForm = ({initialData}:{initialData:TitleEditFormProps}) => {
+const buttonTypeDiv = (buttonType:string,setOpenDialog:any)=>{
+    if(buttonType === 'icon'){
+        return (<Button onClick={()=>setOpenDialog(false)} variant='ghost' size='icon'>
+                        <Pencil className='h-5 w-5'/>
+                    </Button>)
+    }else{
+        return (
+                 <Button onClick={()=>setOpenDialog(false)} variant='ghost' size='base' className="p-2">
+                            Edit
+                </Button>
+                    )
+    }
+}
+const TitleEditForm = ({initialData,buttonType}:{initialData:TitleEditFormProps,buttonType:string}) => {
     const [opendDialog,setOpenDialog] = useState(false)
     const router = useRouter()
     var form = useForm<z.infer<typeof formSchema>>({
@@ -59,10 +74,8 @@ const TitleEditForm = ({initialData}:{initialData:TitleEditFormProps}) => {
     }
     return (
         <Dialog onOpenChange={setOpenDialog} open={opendDialog} defaultOpen>
-                <DialogTrigger asChild>
-                    <Button onClick={()=>setOpenDialog(false)} variant='ghost' size='icon'>
-                        <Pencil className='h-5 w-5'/>
-                    </Button>
+                <DialogTrigger>
+                    {buttonTypeDiv(buttonType,setOpenDialog)}
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>

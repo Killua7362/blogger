@@ -5,6 +5,7 @@ import prismadb from "@/lib/prismadb";
 import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 import { Posts } from "@prisma/client";
+import { SessionProvider } from "next-auth/react";
 
 interface AllPostProps{
     posts : Posts[]
@@ -12,7 +13,7 @@ interface AllPostProps{
 
 const AllPost = ({posts}:{posts:AllPostProps}) => {
     return (
-        <div>
+        <SessionProvider>
             <div className="text-6xl p-6 border-b-2 pb-10"> 
                 All Posts
             </div>
@@ -21,7 +22,7 @@ const AllPost = ({posts}:{posts:AllPostProps}) => {
                  <BlogItem initialData={post} key={post.id}/>
                 ))}
             </div>
-        </div>
+        </SessionProvider>
       );
 }
  

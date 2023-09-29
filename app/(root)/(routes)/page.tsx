@@ -3,6 +3,7 @@ import prismadb from "@/lib/prismadb";
 import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 import AllPost from "./components/all-posts";
+import { SessionProvider } from "next-auth/react";
 
 
 const BasePage = async () => {

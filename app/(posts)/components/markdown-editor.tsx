@@ -26,7 +26,7 @@ const Editor = ({initialEditing,initialData,searchParamsId}:{initialEditing:bool
     const [value, setValue] = useState(initialData.article);
     useEffect(()=>{
         setIsEditing(initialEditing)
-    })
+    },[setIsEditing,initialEditing])
     const onChange = useCallback<OnChange>((val) => {
 
         setValue(val || '');
@@ -48,7 +48,7 @@ const Editor = ({initialEditing,initialData,searchParamsId}:{initialEditing:bool
         router.refresh()
     }
  
-    if(isEditing){
+    if(isEditing && adminState){
     return (
             <div className="fixed left-10 right-10" data-color-mode={theme}>
                 <div className='text-4xl'>
@@ -70,7 +70,7 @@ const Editor = ({initialEditing,initialData,searchParamsId}:{initialEditing:bool
                     }}>
                         Submit
                         </Button>
-                        <Button variant='secondary' className='ml-2' onClick={()=>{
+                        <Button  variant='secondary' className='ml-2' onClick={()=>{
                         setIsEditing(false)
                         router.refresh()
                     }}>
@@ -90,7 +90,7 @@ const Editor = ({initialEditing,initialData,searchParamsId}:{initialEditing:bool
             </div>
             <Separator className='mb-4 mt-6'/>
             <div data-color-mode={theme}>
-                <MDEditor.Markdown source={value}/>
+                <MDEditor.Markdown source={value !==""?value:"This Post is not done yet".toUpperCase()}/>
             </div> 
             <CommentsPage searchParamsId={searchParamsId}/>
         </div> )

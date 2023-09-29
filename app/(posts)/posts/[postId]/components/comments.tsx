@@ -72,7 +72,7 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:string}) => {
                 <Separator/>
             </div>
             <div className="flex pt-3">
-                <Image src={session === null? '/placeholder.png':session?.session?.picture!}
+                <Image src={session === null || session === undefined? '/placeholder.png':session?.session?.picture!}
                   alt='testing'
                   width={0}
                   height={0}
@@ -84,12 +84,17 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:string}) => {
                     <Input className="w-full ml-4"
                     placeholder={session === null? 'Sign In to comment':'Type your comment'}
                     value={inputcomment}
+                    onKeyDown={event=>{
+                        if(event.key == 'Enter'){
+                            commentSendHandler()
+                        }
+                    }}
                     onChange={(event)=>{
                         setInputComment(event.target.value || '')
                     }}
-                    disabled={session===null}
+                    disabled={session===null || session===undefined}
                     />
-                    <Button variant='ghost' onClick={commentSendHandler} disabled={session===null}>
+                    <Button variant='ghost' type="submit" onClick={commentSendHandler} disabled={session===null || session===undefined}>
                         <SendHorizonalIcon/>
                     </Button>
                 </div>

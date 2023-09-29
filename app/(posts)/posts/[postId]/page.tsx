@@ -5,6 +5,9 @@ import { NextResponse } from "next/server";
 import { useRouter,notFound} from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import CommentsPage from "./components/comments";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { admin } from "@/recoil/admin";
 
 export interface EditorPageProps{
     id:string
@@ -21,7 +24,7 @@ const EditorPage = async ({searchParams}:{searchParams:EditorPageProps}) => {
     })
     return(
         <div>
-            <Editor initialEditing={post?.article === ""?true:false} initialData={post} searchParamsId={searchParams.id}/>
+            <Editor initialEditing={post?.article === ""? true : false} initialData={post} searchParamsId={searchParams.id}/>
         </div>
     ) 
 }

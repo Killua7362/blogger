@@ -12,19 +12,18 @@ import { useRecoilState } from "recoil";
 import { admin } from "@/recoil/admin";
 import TitleEditForm from "@/app/(posts)/components/title-edit-form";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
-
+import Link from "next/link";
 
 const Item = ({initialData}:{initialData:Posts})=>{
     const router = useRouter()
-    
     return(
-            <div className="flex flex-col pt-8" onClick={()=>{
+            <div className="flex flex-col pt-8" role="button" onClick={()=>{
                 const url = qs.stringifyUrl({
                     url:'/posts/postId',
                     query:{id:initialData.id}
                 })
                 router.push(url)
-            }}>
+            }} >
                 <div className="text-xs">
                     {format(initialData.createdAt,'dd/MM/yyyy')}
                 </div>

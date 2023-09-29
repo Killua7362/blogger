@@ -20,8 +20,8 @@ import * as z from "zod"
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { EditorProps } from "./markdown-editor";
 import { ContextMenu, ContextMenuItem } from "@radix-ui/react-context-menu";
+import { Posts } from "@prisma/client";
 
 
 let titleList:string[] =[]
@@ -50,7 +50,7 @@ const buttonTypeDiv = (buttonType:string,setOpenDialog:any)=>{
                     )
     }
 }
-const TitleEditForm = ({initialData,buttonType}:{initialData:EditorProps,buttonType:string}) => {
+const TitleEditForm = ({initialData,buttonType}:{initialData:Posts,buttonType:string}) => {
     const [opendDialog,setOpenDialog] = useState(false)
     const router = useRouter()
     var form = useForm<z.infer<typeof formSchema>>({

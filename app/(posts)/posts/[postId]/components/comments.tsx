@@ -8,7 +8,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import CommentItem from "./comment-item";
 import { useRouter } from "next/navigation";
-import { CommentsPageProps } from "@/app/(posts)/components/markdown-editor";
 import { Posts, User } from "@prisma/client";
 
 interface SessionProps{
@@ -18,7 +17,7 @@ interface SessionProps{
    }
 }
 
-const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
+const CommentsPage = ({searchParamsId}:{searchParamsId:string}) => {
     const [session,setSession] = useState<SessionProps>()
     const [inputcomment,setInputComment] = useState('')
     const [comments,setComments] = useState([])
@@ -97,7 +96,7 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
             </div>
             <div className="pt-4">
                 {comments.map((item)=>(
-                    <CommentItem key={searchParamsId.searchParamsId} postId={searchParamsId} comment={item}/>
+                    <CommentItem key={searchParamsId} postId={searchParamsId} comment={item}/>
                 ))}
             </div>
         </div>

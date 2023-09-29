@@ -6,10 +6,9 @@ import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { format } from 'date-fns';
-import { CommentsPageProps } from "@/app/(posts)/components/markdown-editor";
 
 
-const CommentItem = ({postId,comment}:{postId:CommentsPageProps,comment:Comment}) => {
+const CommentItem = ({postId,comment}:{postId:string,comment:Comment}) => {
     const [userData,setUserData] = useState<User>()
     useEffect(()=>{
         const getUserInfo = async () =>{

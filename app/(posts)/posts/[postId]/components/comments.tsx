@@ -13,12 +13,11 @@ interface CommentsPageProps{
     searchParamsId:string
 }
 
-let comments = []
-let post = {}
-
 const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
     const [session,setSession] = useState(null)
     const [inputcomment,setInputComment] = useState('')
+    const [comments,setComments] = useState([])
+    const [post,setPost] = useState({})
     const router = useRouter()
    const commentSendHandler =async () =>{
         if(session && post){
@@ -36,21 +35,27 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
     }
 
     useEffect(()=>{
+        const allComments = async()=>{
+            const postData = await axios.get(`/api/posts/${searchParamsId}`)
+            if(postData.data!==undefined){
+                setPost(postData.data)
+            }
+            if(postData.data.comments!==undefined){
+                setComments(postData.data.comments)
+            }
+        }
+
+        allComments()
 
         const sessionHandler =async ()=>{
             const session = await axios.get(`/api/session/`)
-            setSession(session.data)
+            if(session?.data?.session?.picture !==undefined){
+                setSession(session.data)
+            }
         }
 
         sessionHandler()
-
-        const allComments = async()=>{
-            const postData = await axios.get(`/api/posts/${searchParamsId}`)
-            post = postData.data ===undefined?{}:postData.data
-            comments = postData.data.comments === undefined? []:postData.data.comments
-        }
-        allComments()
-    },[session])
+    },[comments,post])
 
     return (
         <div className="pb-80 pt-7">
@@ -59,7 +64,7 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
                 <Separator/>
             </div>
             <div className="flex pt-3">
-                <Image src={session === null?'/placeholder.png':session.session.picture}
+                <Image src={session === null? '/placeholder.png':session?.session?.picture}
                   alt='testing'
                   width={0}
                   height={0}
@@ -68,10 +73,14 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
                   className="rounded-full"
                 />
                 <div className="flex w-full">
-                    <Input className="w-full ml-4" onChange={(event)=>{
+                    <Input className="w-full ml-4"
+                    placeholder={session === null? 'Sign In to comment':'Type your comment'}
+                    onChange={(event)=>{
                         setInputComment(event.target.value || '')
-                    }}/>
-                    <Button variant='ghost' onClick={commentSendHandler}>
+                    }}
+                    disabled={session===null}
+                    />
+                    <Button variant='ghost' onClick={commentSendHandler} disabled={session===null}>
                         <SendHorizonalIcon/>
                     </Button>
                 </div>

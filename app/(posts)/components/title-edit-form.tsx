@@ -48,7 +48,7 @@ const buttonTypeDiv = (buttonType:string,setOpenDialog:any)=>{
                     </Button>)
     }else{
         return (
-                 <Button onClick={()=>setOpenDialog(false)} variant='ghost' size='base' className="p-2">
+                 <Button onClick={()=>setOpenDialog(false)} variant='ghost'  className="p-2">
                             Edit
                 </Button>
                     )

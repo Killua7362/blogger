@@ -64,7 +64,7 @@ const CreatePost = () => {
             <Dialog onOpenChange={setOpenDialog} open={opendDialog} defaultOpen>
                 <DialogTrigger asChild>
                     <DropdownMenuItem onSelect={(e)=>e.preventDefault()}>
-                        <Button variant='ghost' size='base' onClick={()=>setOpenDialog(true)}>New Post</Button>
+                        <Button variant='ghost' onClick={()=>setOpenDialog(true)}>New Post</Button>
                     </DropdownMenuItem>
                 </DialogTrigger>
                 <DialogContent>

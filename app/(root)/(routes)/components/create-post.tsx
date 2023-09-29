@@ -19,7 +19,7 @@ import * as z from "zod"
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
-let titleList = []
+let titleList:string[] = []
 
 const formSchema = z.object({
     title: z.string().min(2,{

@@ -13,28 +13,15 @@ import { Separator } from '@/components/ui/separator';
 import { Pencil } from 'lucide-react';
 import TitleEditForm from './title-edit-form';
 import CommentsPage from '../posts/[postId]/components/comments';
-
+import { Posts } from '@prisma/client';
+import { EditorPageProps } from '../posts/[postId]/page';
 type OnChange = (value?: string, event?: React.ChangeEvent<HTMLTextAreaElement>, state?: ContextStore) => void;
 
-export interface EditorProps{
-    id:string,
-    title:string,
-    description:string,
-    article:string,
-    comments:Comment[],
-    createdAt:string,
-    updatedAt:string,
-}
 
-
-export interface CommentsPageProps{
-    searchParamsId:string
-}
-
-const Editor = ({initialEditing,initialData,searchParamsId}:{initialEditing:boolean,initialData:EditorProps,searchParamsId:CommentsPageProps}) => {
+const Editor = ({initialEditing,initialData,searchParamsId}:{initialEditing:boolean,initialData:Posts,searchParamsId:string}) => {
     const { theme,setTheme } = useTheme()
     const [isEditing,setIsEditing] = useRecoilState(edit)
-    const [adminState,setAdminState] =useRecoilState(admin)
+    const [adminState,setAdminState] =useRecoilState<boolean>(admin)
 
     const [value, setValue] = useState(initialData.article);
     useEffect(()=>{

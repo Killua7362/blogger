@@ -23,12 +23,8 @@ import { useRouter } from "next/navigation";
 import { EditorProps } from "./markdown-editor";
 import { ContextMenu, ContextMenuItem } from "@radix-ui/react-context-menu";
 
-interface TitleEditFormProps{
-    initialData:EditorProps,
-    buttonType:string
-}
 
-let titleList = []
+let titleList:string[] =[]
 
 const formSchema = z.object({
     title: z.string().min(2,{
@@ -54,7 +50,7 @@ const buttonTypeDiv = (buttonType:string,setOpenDialog:any)=>{
                     )
     }
 }
-const TitleEditForm = ({initialData,buttonType}:{initialData:TitleEditFormProps,buttonType:string}) => {
+const TitleEditForm = ({initialData,buttonType}:{initialData:EditorProps,buttonType:string}) => {
     const [opendDialog,setOpenDialog] = useState(false)
     const router = useRouter()
     var form = useForm<z.infer<typeof formSchema>>({

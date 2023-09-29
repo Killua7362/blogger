@@ -4,10 +4,15 @@ import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 import AllPost from "./components/all-posts";
 import { SessionProvider } from "next-auth/react";
+import { Posts } from "@prisma/client";
 
+
+interface AllPostProps{
+    posts : Posts[]
+}
 
 const BasePage = async () => {
-    const posts =await prismadb.posts.findMany({
+    const posts:Posts[]=await prismadb.posts.findMany({
         orderBy:{
             updatedAt:'desc'
         }

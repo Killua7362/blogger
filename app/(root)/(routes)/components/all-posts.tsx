@@ -7,11 +7,8 @@ import { useRecoilState } from "recoil";
 import { Posts } from "@prisma/client";
 import { SessionProvider } from "next-auth/react";
 
-interface AllPostProps{
-    posts : Posts[]
-}
 
-const AllPost = ({posts}:{posts:AllPostProps}) => {
+const AllPost = ({posts}:{posts:Posts[]}) => {
     return (
         <SessionProvider>
             <div className="text-6xl p-6 border-b-2 pb-10"> 

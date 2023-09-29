@@ -13,11 +13,8 @@ import { admin } from "@/recoil/admin";
 import TitleEditForm from "@/app/(posts)/components/title-edit-form";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 
-interface BlogItemProps{
-    initialData:Posts
-}
 
-const Item = ({initialData}:{initialData:BlogItemProps})=>{
+const Item = ({initialData}:{initialData:Posts})=>{
     const router = useRouter()
     
     return(
@@ -41,7 +38,7 @@ const Item = ({initialData}:{initialData:BlogItemProps})=>{
     )
 }
 
-const BlogItem = ({initialData}:{initialData:BlogItemProps}) => {
+const BlogItem = ({initialData}:{initialData:Posts}) => {
     const router = useRouter()
     const {data:session} = useSession()
     const [adminState,setAdminState] =useRecoilState(admin)

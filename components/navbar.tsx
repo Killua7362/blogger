@@ -8,7 +8,7 @@ import HomeMenu from "@/app/(root)/(routes)/components/home-menu";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
-const NavBar = ({ extraComponents }:{extraComponents:[]}) => {
+const NavBar = ({ extraComponents }:{extraComponents:JSX.Element[]}) => {
     const router = useRouter()
     const { theme, setTheme } = useTheme()
     return (

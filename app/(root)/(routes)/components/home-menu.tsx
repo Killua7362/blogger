@@ -12,9 +12,9 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import axios from "axios";
 import { Role } from "@prisma/client";
 
-const HomeMenu = ({extraComponents}:{extraComponents:[]}) => {
+const HomeMenu = ({extraComponents}:{extraComponents:JSX.Element[]}) => {
     const {data:session} = useSession()
-    const [adminState,setAdminState] =useRecoilState(admin)
+    const [adminState,setAdminState] =useRecoilState<boolean>(admin)
     useEffect(()=>{
         if(session){
             const adminStateHandler =async ()=>{
@@ -55,10 +55,10 @@ const HomeMenu = ({extraComponents}:{extraComponents:[]}) => {
                                 <DropdownMenuLabel className="text-base">
                                     <div className="flex" >
                                         <div className="pr-2 ">
-                                            <Image src={session.user.image} width={20} height={20} className="pt-1" alt="profile pic"/>
+                                            <Image src={session?.user?.image!} width={20} height={20} className="pt-1" alt="profile pic"/>
                                         </div>
                                         <div className="pr-1"> 
-                                            {String( session.user.name ).toUpperCase()}
+                                            {String( session?.user?.name ).toUpperCase()}
                                         </div>
                                     </div>
                                 </DropdownMenuLabel>

@@ -9,7 +9,7 @@ export async function GET(req:NextRequest){
         })
         const authorId = await prismadb.user.findUnique({
             where:{
-                email:session.email
+                email:session?.email!
             }
         })
         return NextResponse.json({ session,authorId })

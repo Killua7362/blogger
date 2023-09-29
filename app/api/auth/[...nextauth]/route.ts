@@ -15,13 +15,13 @@ const handler = NextAuth({
             try {
              await prismadb.user.upsert({
                 where:{
-                    email:user.email
+                    email:user.email!
                 },
                 update:{
                 },
                 create:{
                     name:user.name,
-                    email:user.email,
+                    email:user.email!,
                     role: user.email === process.env.NEXT_PUBLIC_ADMIN_MAIL?Role.ADMIN:Role.USER
                 }
             })

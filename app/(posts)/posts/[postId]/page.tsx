@@ -6,10 +6,8 @@ import { useRouter,notFound} from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import CommentsPage from "./components/comments";
 
-interface EditorPageProps{
-    searchParams:{
-        id:string
-    }
+export interface EditorPageProps{
+    id:string
 }
 
 const EditorPage = async ({searchParams}:{searchParams:EditorPageProps}) => {

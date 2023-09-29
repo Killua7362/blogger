@@ -9,13 +9,20 @@ import { useEffect, useState } from "react";
 import CommentItem from "./comment-item";
 import { useRouter } from "next/navigation";
 import { CommentsPageProps } from "@/app/(posts)/components/markdown-editor";
+import { Posts, User } from "@prisma/client";
 
+interface SessionProps{
+   authorId:User,
+   session:{
+    picture:string
+   }
+}
 
 const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
-    const [session,setSession] = useState(null)
+    const [session,setSession] = useState<SessionProps>()
     const [inputcomment,setInputComment] = useState('')
     const [comments,setComments] = useState([])
-    const [post,setPost] = useState({})
+    const [post,setPost] = useState<Posts>()
     const router = useRouter()
    const commentSendHandler =async () =>{
         if(session && post){
@@ -41,8 +48,8 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
             }
             if(postData.data.comments!==undefined){
                 setComments(
-                    postData.data.comments.sort(function(a,b){
-                        return new Date(b.createdAt) - new Date(a.createdAt)
+                    postData.data.comments.sort(function(a:Posts,b:Posts){
+                        return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
                     })
                 )
             }
@@ -66,7 +73,7 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:CommentsPageProps}) => {
                 <Separator/>
             </div>
             <div className="flex pt-3">
-                <Image src={session === null? '/placeholder.png':session?.session?.picture}
+                <Image src={session === null? '/placeholder.png':session?.session?.picture!}
                   alt='testing'
                   width={0}
                   height={0}

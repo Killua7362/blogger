@@ -1,6 +1,7 @@
 import prismadb from "@/lib/prismadb";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server"
+export const revalidate = 0;
 
 export async function PATCH(req:NextRequest,
     {params}:{params:{postId:string}}
@@ -22,15 +23,27 @@ try {
     if(!params.postId){
         return new NextResponse('id is required',{status:400})
     }
+    let posts
+    if(comments.length<1){
+        posts=await prismadb.posts.update({
+            where:{
+                id:params.postId,
+            },
+            data:{
+                id,title,description,article,createdAt,updatedAt
+            }
+        })
+    }else{
+        posts=await prismadb.posts.update({
+            where:{
+                id:params.postId,
+            },
+            data:{
+                ...body
+            }
+        })
+    }
 
-    const posts=await prismadb.posts.update({
-        where:{
-            id:params.postId,
-        },
-        data:{
-            id,title,description,article,comments,createdAt,updatedAt
-        }
-    })
         return NextResponse.json(posts);
 } catch (error) {
     console.log('[COMPANION_PATCH]',error)
@@ -77,6 +90,9 @@ export async function GET(
                 comments:true
             }
         })
+        if(!post){
+            return new NextResponse('Post does not exist',{status:404})
+        }
         return NextResponse.json(post);
     } catch (error) {
         console.log("[Post_DELETE",error)

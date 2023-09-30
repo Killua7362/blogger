@@ -53,8 +53,8 @@ const CreatePost = () => {
 
     useEffect(()=>{
         const fetchTitle=async()=>{
-            const titles = await axios.get(`/api/posts`)
-            titleList=titles.data
+            const posts= await axios.get(`/api/posts`)
+            titleList=posts.data.map(obj=>obj.title)
         }
         fetchTitle()
     },[])

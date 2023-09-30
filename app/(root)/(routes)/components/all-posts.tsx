@@ -6,16 +6,26 @@ import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 import { Posts } from "@prisma/client";
 import { SessionProvider } from "next-auth/react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 
-const AllPost = ({posts}:{posts:Posts[]}) => {
+const AllPost = () => {
+    const [postData,setPostData] = useState<Posts[]>()
+    useEffect(()=>{
+        const handlePostData = async()=>{
+            const posts = await axios.get(`/api/posts`)
+            setPostData(posts.data)
+        }
+        handlePostData()
+    })
     return (
         <SessionProvider>
             <div className="text-6xl p-6 border-b-2 pb-10"> 
                 All Posts
             </div>
             <div>
-                {posts.map((post)=>(
+                { postData !== undefined && postData.map((post)=>(
                  <BlogItem initialData={post} key={post.id}/>
                 ))}
             </div>

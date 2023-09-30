@@ -16,16 +16,18 @@ import Link from "next/link";
 
 const Item = ({initialData}:{initialData:Posts})=>{
     const router = useRouter()
+    const getUrl = ()=>{
+        const url = qs.stringifyUrl({
+            url:'/posts/postId',
+            query:{id:initialData.id}
+        })
+        return url
+    }
     return(
-            <div className="flex flex-col pt-8" role="button" onClick={()=>{
-                const url = qs.stringifyUrl({
-                    url:'/posts/postId',
-                    query:{id:initialData.id}
-                })
-                router.push(url)
-            }} >
+        <Link href={getUrl()}>
+            <div className="flex flex-col pt-8" role="button">
                 <div className="text-xs">
-                    {format(initialData.createdAt,'dd/MM/yyyy')}
+                    {format(new Date(initialData.createdAt),'dd/MM/yyyy')}
                 </div>
                 <div className="text-4xl pt-1">
                     {String( initialData.title ).toUpperCase()}
@@ -34,6 +36,7 @@ const Item = ({initialData}:{initialData:Posts})=>{
                     {initialData.description}
                 </div>
             </div>
+        </Link>
     )
 }
 

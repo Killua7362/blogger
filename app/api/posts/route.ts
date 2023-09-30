@@ -2,6 +2,7 @@ import prismadb from "@/lib/prismadb";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server"
 
+export const revalidate = 0;
 export async function POST(req:NextRequest){
 try {
     const session = await getToken({
@@ -35,11 +36,11 @@ try {
 export async function GET(req:NextRequest){
     try{
         const posts =await prismadb.posts.findMany({
-            select:{
-                title:true
+            orderBy:{
+                updatedAt:'desc'
             }
         })
-        return NextResponse.json(posts.map(obj=>obj.title))
+        return NextResponse.json(posts)
     }catch(error){
     }
 }

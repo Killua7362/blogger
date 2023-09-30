@@ -8,25 +8,19 @@ import CommentsPage from "./components/comments";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { admin } from "@/recoil/admin";
+import { Posts } from "@prisma/client";
+import EditorPage from "./components/EditorPage";
 
 export interface EditorPageProps{
     id:string
 }
 
-const EditorPage = async ({searchParams}:{searchParams:EditorPageProps}) => {
-    const post = await prismadb.posts.findUniqueOrThrow({
-        where:{
-            id:searchParams.id
-        }
-    }).catch(error=>{
-        notFound()
-        new NextResponse('Post does not exist',{status:404})
-    })
-    return(
+const EditorBasePage = ({searchParams}:{searchParams:EditorPageProps}) => {
+    return (
         <div>
-            <Editor initialEditing={post?.article === ""? true : false} initialData={post} searchParamsId={searchParams.id}/>
+            <EditorPage searchParams={searchParams}/>
         </div>
-    ) 
+      );
 }
  
-export default EditorPage;
+export default EditorBasePage;

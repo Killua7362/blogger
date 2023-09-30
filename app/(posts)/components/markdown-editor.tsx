@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { admin, edit } from '@/recoil/admin';
 import axios from 'axios'
-import { useRouter } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { Comment } from '.prisma/client';
 import { useTheme } from 'next-themes';
 import { Separator } from '@/components/ui/separator';
@@ -22,29 +22,17 @@ const Editor = ({initialEditing,initialData,searchParamsId}:{initialEditing:bool
     const { theme,setTheme } = useTheme()
     const [isEditing,setIsEditing] = useRecoilState(edit)
     const [adminState,setAdminState] =useRecoilState<boolean>(admin)
-
     const [value, setValue] = useState(initialData.article);
     useEffect(()=>{
         setIsEditing(initialEditing)
     },[setIsEditing,initialEditing])
     const onChange = useCallback<OnChange>((val) => {
-
         setValue(val || '');
       }, []);
       const router = useRouter()
     const onSubmit =async (value:string)=>{
-        const values = {
-            title:"testing",
-            description:"description",
-            article:value
-        }
-        if( initialData === null){
-            await axios.post(`/api/posts`,values)
-        }
-        else{
-            initialData.article = value
-            await axios.patch(`/api/posts/${initialData.id}`,initialData)
-        }
+        initialData.article = value
+        await axios.patch(`/api/posts/${initialData.id}`,initialData)
         router.refresh()
     }
  

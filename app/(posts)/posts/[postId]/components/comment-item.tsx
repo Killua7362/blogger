@@ -18,10 +18,11 @@ const CommentItem = ({postId,comment}:{postId:string,comment:Comment}) => {
         getUserInfo()
     })
     return (
-         <div className="py-2 my-2 w-full ">
+         <div className="py-2 my-0 w-full ">
             {userData !== null && 
                 (
-                    <div className="flex">
+                    <div>
+                        <div className="flex">
                         <Avatar className="mt-2 ml-2 w-12 h-12 items-center justify-center flex rounded-full">
                             <AvatarFallback className="rounded-full w-12 h-12 text-center border-2 border-muted-foreground" >
                                 <div className="pt-2">
@@ -29,17 +30,16 @@ const CommentItem = ({postId,comment}:{postId:string,comment:Comment}) => {
                                 </div>
                             </AvatarFallback>
                         </Avatar>
-                        <div className="flex flex-col ml-4">
+                        <div className="ml-3 mt-3 text-muted-foreground">
                             <div>
                                 {userData?.name}
                             </div>
                             <div className="text-xs pb-2">
-                                {format(new Date( comment.createdAt ),'mm:hh dd/MM/yyy ' )}
+                                {format(new Date( comment.createdAt ),'dd/MM/yyy ' )}
                             </div>
-                            <div>
-                                {comment.comment}
                             </div>
                         </div>
+                         <div className="pt-1 ml-2">{comment.comment}</div>
                     </div>
                 )
             }

@@ -1,7 +1,7 @@
 import prismadb from "@/lib/prismadb";
 import { NextRequest, NextResponse } from "next/server";
 
-export const revalidate = 0;
+export const revalidate = 1;
 export async function GET(req:NextRequest,
     {params}:{params:{usersId:string}}
     ){

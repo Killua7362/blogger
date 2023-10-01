@@ -21,8 +21,10 @@ const AllPost = () => {
     })
     return (
         <SessionProvider>
-            <div className="text-6xl p-6 border-b-2 pb-10"> 
+            <div className="flex text-6xl p-6 border-b-2 pb-10 w-full"> 
+            <div className="whitespace-nowrap flex-shrink">
                 All Posts
+            </div>
             </div>
             <div>
                 { postData !== undefined && postData.map((post)=>(

@@ -2,7 +2,7 @@ import prismadb from "@/lib/prismadb"
 import { getToken } from "next-auth/jwt"
 import { NextRequest, NextResponse } from "next/server"
 
-export const revalidate = 0;
+export const revalidate = 1;
 export async function POST(req:NextRequest){
     try {
         const session = await getToken({

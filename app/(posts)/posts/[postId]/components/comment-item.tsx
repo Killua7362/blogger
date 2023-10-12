@@ -4,17 +4,19 @@ import { Comment, Posts, User } from "@prisma/client";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import axios from "axios";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { cache, useEffect, useState } from "react";
 import { format } from 'date-fns';
 
 
 const CommentItem = ({postId,comment}:{postId:string,comment:Comment}) => {
     const [userData,setUserData] = useState<User>()
     useEffect(()=>{
-        const getUserInfo = async () =>{
-            const user = await axios.get(`/api/users/${comment.authorId}`)
-            setUserData(user.data)
-        }
+        const getUserInfo = cache(
+             async () =>{
+                const user = await axios.get(`/api/users/${comment.authorId}`)
+                setUserData(user.data)
+            }
+        )
         getUserInfo()
     })
     return (

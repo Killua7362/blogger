@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import axios from "axios";
 import { SendHorizonalIcon } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { cache, useEffect, useState } from "react";
 import CommentItem from "./comment-item";
 import { useRouter } from "next/navigation";
 import { Posts, User } from "@prisma/client";
@@ -23,45 +23,51 @@ const CommentsPage = ({searchParamsId}:{searchParamsId:string}) => {
     const [comments,setComments] = useState([])
     const [post,setPost] = useState<Posts>()
     const router = useRouter()
-   const commentSendHandler =async () =>{
-        if(session && post){
-            const values = {
-                commentText:inputcomment,
-                authorId:session.authorId.id,
-                postId:post.id
+   const commentSendHandler = cache(
+     async () =>{
+            if(session && post){
+                const values = {
+                    commentText:inputcomment,
+                    authorId:session.authorId.id,
+                    postId:post.id
+                }
+                await axios.post(`/api/comment`,values)
+                setInputComment('')
+                router.refresh()
             }
-            await axios.post(`/api/comment`,values)
-            setInputComment('')
-            router.refresh()
+            // console.log(inputcomment)
+            // console.log(post.id)
+            // console.log(session.authorId.id)
         }
-        // console.log(inputcomment)
-        // console.log(post.id)
-        // console.log(session.authorId.id)
-    }
-
+   
+   ) 
     useEffect(()=>{
-        const allComments = async()=>{
-            const postData = await axios.get(`/api/posts/${searchParamsId}`)
-            if(postData.data!==undefined){
-                setPost(postData.data)
+        const allComments = cache(
+             async()=>{
+                const postData = await axios.get(`/api/posts/${searchParamsId}`)
+                if(postData.data!==undefined){
+                    setPost(postData.data)
+                }
+                if(postData.data.comments!==undefined){
+                    setComments(
+                        postData.data.comments.sort(function(a:Posts,b:Posts){
+                            return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+                        })
+                    )
+                }
             }
-            if(postData.data.comments!==undefined){
-                setComments(
-                    postData.data.comments.sort(function(a:Posts,b:Posts){
-                        return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
-                    })
-                )
-            }
-        }
+        )
 
         allComments()
 
-        const sessionHandler =async ()=>{
-            const session = await axios.get(`/api/session/`)
-            if(session?.data?.session?.picture !==undefined){
-                setSession(session.data)
+        const sessionHandler = cache(
+            async ()=>{
+                const session = await axios.get(`/api/session/`)
+                if(session?.data?.session?.picture !==undefined){
+                    setSession(session.data)
+                }
             }
-        }
+        )
         sessionHandler()
     },[comments,post,searchParamsId])
 

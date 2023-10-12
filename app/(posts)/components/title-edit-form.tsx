@@ -3,7 +3,7 @@ import { Pencil } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react";
+import { cache, useEffect, useState } from "react";
 import {
     Form,
     FormControl,
@@ -60,14 +60,16 @@ const TitleEditForm = ({initialData,buttonType}:{initialData:Posts,buttonType:st
             description:initialData.description,
         }
     })
-    const onSubmit =async(formValues:z.infer<typeof formSchema>)=>{
-        initialData.title = formValues.title
-        initialData.description = formValues.description
-        await axios.patch(`/api/posts/${initialData.id}`,initialData)
-        // await axios.post(`/api/posts`,values)
-        setOpenDialog(false)
-        router.refresh()
-    }
+    const onSubmit = cache(
+        async(formValues:z.infer<typeof formSchema>)=>{
+            initialData.title = formValues.title
+            initialData.description = formValues.description
+            await axios.patch(`/api/posts/${initialData.id}`,initialData)
+            // await axios.post(`/api/posts`,values)
+            setOpenDialog(false)
+            router.refresh()
+        }
+    )
     return (
         <Dialog onOpenChange={setOpenDialog} open={opendDialog} defaultOpen>
                 <DialogTrigger>

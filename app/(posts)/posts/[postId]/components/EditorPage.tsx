@@ -4,7 +4,7 @@ import { EditorPageProps } from "../page";
 import { notFound } from "next/navigation";
 import { NextResponse } from "next/server";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { cache, useEffect, useState } from "react";
 import { Posts } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
@@ -12,7 +12,8 @@ const EditorPage =({searchParams}:{searchParams:EditorPageProps}) => {
     const [post,setPost] = useState<Posts>()
     const router = useRouter()
     useEffect(()=>{
-            const postData =async()=>{
+            const postData = cache(
+             async()=>{
                 const result= await axios.get(`/api/posts/${searchParams.id}`).catch(err=>{
                     router.push('/404')
                 }).then(
@@ -20,7 +21,9 @@ const EditorPage =({searchParams}:{searchParams:EditorPageProps}) => {
                         setPost(result?.data)
                     }
                 )
-        }
+            }
+               
+            )
         postData()
         })
     return (

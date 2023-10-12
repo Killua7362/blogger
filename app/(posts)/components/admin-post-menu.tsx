@@ -4,6 +4,7 @@ import { DropdownMenuLabel,DropdownMenuItem, DropdownMenuSeparator } from "@/com
 import { edit } from "@/recoil/admin";
 import axios from "axios";
 import { useRouter, useSearchParams} from "next/navigation";
+import { cache } from "react";
 import { useRecoilState } from "recoil";
 
 
@@ -11,11 +12,13 @@ const AdminPostMenu = () => {
     const params = useSearchParams()
     const [isEditing,setIsEditing] = useRecoilState(edit)
     const router = useRouter()
-    const deleteHandler =async ()=>{
-        const id = params.get('id')
-        axios.delete(`/api/posts/${id}`)
-        router.push('/')
-    }
+    const deleteHandler = cache(
+         async ()=>{
+                const id = params.get('id')
+                axios.delete(`/api/posts/${id}`)
+                router.push('/')
+            }
+    )
     return ( 
         <>
             <DropdownMenuSeparator/>

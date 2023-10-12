@@ -2,7 +2,7 @@
 import MDEditor from '@uiw/react-md-editor';
 import type { ContextStore } from '@uiw/react-md-editor';
 import { Button } from "@/components/ui/button";
-import { useCallback, useEffect, useState } from 'react';
+import { cache, useCallback, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { admin, edit } from '@/recoil/admin';
 import axios from 'axios'
@@ -30,12 +30,13 @@ const Editor = ({initialEditing,initialData,searchParamsId}:{initialEditing:bool
         setValue(val || '');
       }, []);
       const router = useRouter()
-    const onSubmit =async (value:string)=>{
-        initialData.article = value
-        await axios.patch(`/api/posts/${initialData.id}`,initialData)
-        router.refresh()
-    }
- 
+    const onSubmit =cache(
+          async (value:string)=>{
+            initialData.article = value
+            await axios.patch(`/api/posts/${initialData.id}`,initialData)
+            router.refresh()
+        }
+    )  
     if(isEditing && adminState){
     return (
             <div className="fixed left-10 right-10" data-color-mode={theme}>

@@ -1,7 +1,8 @@
 import prismadb from "@/lib/prismadb";
 import { getToken } from "next-auth/jwt";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server"
-export const revalidate = 1;
+import { cache } from "react";
 
 export async function PATCH(req:NextRequest,
     {params}:{params:{postId:string}}
@@ -43,7 +44,8 @@ try {
             }
         })
     }
-
+        revalidatePath(req.nextUrl.searchParams.get('path') || '/')
+        revalidatePath('/api/posts')
         return NextResponse.json(posts);
 } catch (error) {
     console.log('[COMPANION_PATCH]',error)
@@ -70,6 +72,8 @@ export async function DELETE(
                 id:params.postId
             }
         })
+        revalidatePath(req.nextUrl.searchParams.get('path') || '/')
+        revalidatePath('/api/posts')
         return NextResponse.json(posts);
     } catch (error) {
         console.log("[Post_DELETE",error)
@@ -77,25 +81,27 @@ export async function DELETE(
     }
 }
 
-export async function GET(
-    req:NextRequest,
-    {params}:{params:{postId:string}}
-){
-    try{
-        const post = await prismadb.posts.findUnique({
-            where:{
-                id:params.postId
-            },
-            include:{
-                comments:true
+export const GET = cache(
+     async (
+        req:NextRequest,
+        {params}:{params:{postId:string}}
+    )=>{
+        try{
+            const post = await prismadb.posts.findUnique({
+                where:{
+                    id:params.postId
+                },
+                include:{
+                    comments:true
+                }
+            })
+            if(!post){
+                return new NextResponse('Post does not exist',{status:404})
             }
-        })
-        if(!post){
-            return new NextResponse('Post does not exist',{status:404})
+            return NextResponse.json(post);
+        } catch (error) {
+            console.log("[Post_DELETE",error)
+            return new NextResponse('Internal Error',{status:500})
         }
-        return NextResponse.json(post);
-    } catch (error) {
-        console.log("[Post_DELETE",error)
-        return new NextResponse('Internal Error',{status:500})
-    }
-}
+    }   
+) 

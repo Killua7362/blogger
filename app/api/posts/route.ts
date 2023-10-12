@@ -1,8 +1,9 @@
 import prismadb from "@/lib/prismadb";
 import { getToken } from "next-auth/jwt";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server"
+import { cache } from 'react'
 
-export const revalidate = 1;
 export async function POST(req:NextRequest){
 try {
     const session = await getToken({
@@ -26,21 +27,24 @@ try {
             article,
         }
     })
-        return NextResponse.json(post);
-} catch (error) {
-    console.log('[post_POST]',error)
-    return new NextResponse("Internal Error",{status:500})
-}
-}
-
-export async function GET(req:NextRequest){
-    try{
-        const posts =await prismadb.posts.findMany({
-            orderBy:{
-                updatedAt:'desc'
-            }
-        })
-        return NextResponse.json(posts)
-    }catch(error){
+    revalidatePath('/api/posts')
+    return NextResponse.json(post);
+    } catch (error) {
+        console.log('[post_POST]',error)
+        return new NextResponse("Internal Error",{status:500})
     }
 }
+
+export const GET= cache(
+     async  (req:NextRequest)=>{
+        try{
+            const posts =await prismadb.posts.findMany({
+                orderBy:{
+                    updatedAt:'desc'
+                }
+            })
+            return NextResponse.json(posts)
+        }catch(error){
+        }
+    }   
+) 

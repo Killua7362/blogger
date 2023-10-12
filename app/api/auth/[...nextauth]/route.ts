@@ -2,8 +2,6 @@ import prismadb from "@/lib/prismadb";
 import { Role } from "@prisma/client";
 import NextAuth from "next-auth/next";
 import GoogleProvider from 'next-auth/providers/google'
-
-export const revalidate = 1;
 const handler = NextAuth({
     providers:[
         GoogleProvider({
